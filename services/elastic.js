@@ -1,5 +1,5 @@
 const { Client } = require('@elastic/elasticsearch')
-const { ELASTIC, ELASTIC_INDEX_NAME, REMOVE_INDEX_BEFORE_BULK } = require('../configs/enviroment')
+const { ELASTIC, ELASTIC_INDEX_NAME, REMOVE_INDEX_BEFORE_BULK, QUERY_RESULTS, FILTER_FIELDS } = require('../configs/enviroment')
 // https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/basic-config.html
 const client = new Client({
   node: ELASTIC
@@ -40,11 +40,61 @@ const bulkData = async (data) => {
 
   const totalAdd = await client.count({ index: ELASTIC_INDEX_NAME })
   return { total_elements: data.length, elements_in_index: totalAdd.body.count, errors: bulkResponse.errors ? bulkResponse.items.length : 0 }
-
-
 }
 
+const generateNotFilterQuery = (from = 0) => {
+  return [
+      { index: ELASTIC_INDEX_NAME },
+      {
+        query: {
+          query_string: {
+            query: "*",
+            fields: FILTER_FIELDS
+        }
+        },
+        from,
+        size: QUERY_RESULTS,
+      }
+    ]
+}
+
+const generateFuzzyQuery = (filter, from = 0) => {
+  return [
+    { index: ELASTIC_INDEX_NAME },
+    {
+      from,
+      size: QUERY_RESULTS,
+      query: {
+        bool: {
+          must: [
+            {
+              multi_match: {
+                query: filter,
+                fields: FILTER_FIELDS,
+                operator: "AND",
+                fuzziness: "AUTO"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+
+const search = async ({ filter = '', page = 0 } = {}) => {
+  const query = !filter.length || filter === "*" ? generateNotFilterQuery(page*QUERY_RESULTS) : generateFuzzyQuery(filter, page*QUERY_RESULTS);
+  const { body } = await client.msearch({
+    body: query
+  })
+  if (body.responses.length > 0 && body.responses[0].status === 200) {
+    return body.responses[0].hits.hits.map(h => h._source)
+  } else {
+    throw new Error("Query error")
+  }
+}
 
 module.exports = {
-  bulkData
+  bulkData,
+  search
 }

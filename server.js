@@ -37,7 +37,7 @@ app.use(morgan("tiny")); //logging
 //////////////
 app.get('/', (req, res) => res.send('App is working'))
 app.use("/api/", PingRouter);
-app.use("/api/politician", PoliticianRouter);
+app.use("/api/politicians", PoliticianRouter);
 
 //These routes are to generate a test JWT and test out your auth function from auth.js
 /* app.get("/testauth", auth(SECRET), (req, res) => {
