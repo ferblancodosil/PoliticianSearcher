@@ -5,7 +5,7 @@ const politicians = new express.Router();
 const upload = multer({ dest: 'tmp/csv/' });
 const { uploadFile } = require('../controllers/politicians.js');
 
-politicians.post('/upload', upload.single('file'), uploadFile);
+politicians.post('/bulk', upload.single('file'), uploadFile);
 
 module.exports = {
   politicians
