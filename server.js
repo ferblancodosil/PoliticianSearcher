@@ -1,14 +1,10 @@
-const PingController = require('./controllers/ping.js')
+const { ping: PingRouter } = require('./routers/ping.js')
+const { politicians: PoliticianRouter } = require('./routers/politician.js')
 
 ///////////////////////////
 // Environmental Variables
 ///////////////////////////
-require("./envfunc")();
-const {
-  PORT = 3000,
-  SECRET = "secret",
-  NODE_ENV = "development",
-} = process.env;
+const { PORT, NODE_ENV, SECRET } = require('./configs/enviroment.js')
 console.log(PORT);
 
 //CORS
@@ -40,7 +36,8 @@ app.use(morgan("tiny")); //logging
 //Routes and Routers
 //////////////
 app.get('/', (req, res) => res.send('App is working'))
-app.get("/ping", PingController.ping);
+app.use("/api/", PingRouter);
+app.use("/api/politician", PoliticianRouter);
 
 //These routes are to generate a test JWT and test out your auth function from auth.js
 /* app.get("/testauth", auth(SECRET), (req, res) => {
