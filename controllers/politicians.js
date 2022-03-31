@@ -1,5 +1,5 @@
 const { parseCSV } = require('../services/csv')
-const { bulkData, search: searchService } = require('../services/elastic')
+const { bulkData, search: searchService, getById: getByIdService } = require('../services/elastic')
 
 const uploadFile = async (req, res) => {
   try {
@@ -20,7 +20,17 @@ const search = async (req, res) => {
   }
 }
 
+const getById = async (req, res) => {
+  try{
+    const response = await getByIdService(req.params)
+    res.status(200).json(response)
+  } catch (e) {
+    return res.status(500).send(`${e}`)
+  }
+}
+
 module.exports = {
   uploadFile,
-  search
+  search,
+  getById
 }
