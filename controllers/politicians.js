@@ -7,6 +7,7 @@ const uploadFile = async (req, res) => {
     const response = await bulkData(data)
     res.status(200).json(response)
   } catch (e) {
+    console.error(e)
     return res.status(412).send(`${e}`)
   }
 }
@@ -16,6 +17,7 @@ const search = async (req, res) => {
     const response = await searchService(req.query)
     res.status(200).json(response)
   } catch (e) {
+    console.error(e)
     return res.status(500).send(`${e}`)
   }
 }
@@ -25,6 +27,7 @@ const getById = async (req, res) => {
     const response = await getByIdService(req.params)
     res.status(200).json(response)
   } catch (e) {
+    console.error(e)
     return res.status(404).send(`${e}`)
   }
 }

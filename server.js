@@ -6,7 +6,6 @@ const { politicians: PoliticianRouter } = require('./routers/politician.js')
 // Environmental Variables
 ///////////////////////////
 const { PORT, NODE_ENV, ELASTIC } = require('./configs/enviroment.js')
-console.log(PORT);
 
 //CORS
 const cors = require("cors");

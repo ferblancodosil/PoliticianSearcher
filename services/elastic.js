@@ -23,7 +23,6 @@ const properties = {
   OBSERVACIONES: { type: 'text' }
 }
 
-
 const generateNotFilterQuery = (from = 0) => {
   return [
     { index: ELASTIC_INDEX_NAME },
@@ -65,7 +64,11 @@ const generateFuzzyQuery = (filter, from = 0) => {
 }
 
 const bulkData = async (data = []) => {
-  if (REMOVE_INDEX_BEFORE_BULK) await client.indices.delete({ index: ELASTIC_INDEX_NAME })
+  if (REMOVE_INDEX_BEFORE_BULK) {
+    try {
+      await client.indices.delete({ index: ELASTIC_INDEX_NAME })
+    } catch (e) {}
+  }
   await client.indices.create({
     index: ELASTIC_INDEX_NAME,
     body: {
