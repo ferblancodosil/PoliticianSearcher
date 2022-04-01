@@ -1,0 +1,185 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Politician API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/ping": {
+      "get": {
+        "tags": ["config"],
+        "operationId": "ping",
+        "summary": "Api ping status",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "examples": {
+              "application/json": "{\n    \"ping\": \"pong!\" \n}"
+            }
+          }
+        }
+      }
+    },
+    "/api/politicians": {
+      "get": {
+        "tags": ["politicians"],
+        "operationId": "getPoliticians",
+        "summary": "Get list of politicians",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "items": {
+              "type": "string"
+            },
+            "description": "Parameter to do a search by the politician name"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "minimum": 0,
+            "default": 0,
+            "items": {
+              "type": "number"
+            },
+            "description": "Parameter to do a search in the politician name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Politicians list response",
+            "schema": {
+              "type": "array",
+              "$ref": "#/definitions/Politician"
+            }
+          },
+          "500": {
+            "description": "500 response",
+            "examples": {
+              "application/text": "Query error"
+            }
+          }
+        }
+      }
+    },
+    "/api/politicians/bulk": {
+      "post": {
+        "tags": ["politicians"],
+        "operationId": "bulkPoliticians",
+        "summary": "Bulk politicians",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "file",
+            "required": false,
+            "type": "file",
+            "description": "The uploaded file data"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Politicians list response",
+            "schema": {
+              "type": "array",
+              "$ref": "#/definitions/Bulk"
+            }
+          },
+          "412": {
+            "description": "412 response"
+          }
+        }
+      }
+    },
+    "/api/politicians/{id}": {
+      "get": {
+        "tags": ["politicians"],
+        "operationId": "getPoliticianById",
+        "summary": "Get politician by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "Parameter to filter by politician id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Politician  response",
+            "schema": {
+              "$ref": "#/definitions/Politician"
+            }
+          },
+          "404": {
+            "description": "404 response",
+            "examples": {
+              "application/text": "Not found element by id 'asdsagerwdsaf'"
+            }
+          },
+          "500": {
+            "description": "500 response",
+            "examples": {
+              "application/text": "Query error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Bulk": {
+      "type": "object",
+      "properties": {
+        "total_elements": { "type": "number" },
+        "elements_in_index": { "type": "number" },
+        "errors": { "type": "number" }
+      }
+    },
+    "Politician": {
+      "type": "object",
+      "required": [
+        "ID",
+        "TITULAR"
+      ],
+      "properties": {
+        "ID": { "type": "string" },
+        "TITULAR": { "type": "string" },
+        "PARTIDO": { "type": "string" },
+        "PARTIDO_PARA_FILTRO": { "type": "string" },
+        "GENERO": { "type": "string" },
+        "CARGO": { "type": "string" },
+        "CARGO_PARA_FILTRO": { "type": "string" },
+        "INSTITUCION": { "type": "string" },
+        "CCAA": { "type": "string" },
+        "SUELDOBASE_SUELDO": { "type": "number"},
+        "COMPLEMENTOS_SUELDO": { "type": "number"},
+        "PAGASEXTRA_SUELDO": { "type": "number"},
+        "OTRASDIETASEINDEMNIZACIONES_SUELDO": { "type": "number"},
+        "TRIENIOS_SUELDO": { "type": "number"},
+        "RETRIBUCIONMENSUAL": { "type": "number"},
+        "RETRIBUCIONANUAL": { "type": "number"},
+        "OBSERVACIONES": { "type": "string" }
+      }
+    }
+  },
+  "consumes": [
+    "application/json"
+  ]
+}

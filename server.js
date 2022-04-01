@@ -1,4 +1,5 @@
 const { ping: PingRouter } = require('./routers/ping.js')
+const { swagger: swaggerRouter } = require('./routers/swagger.js')
 const { politicians: PoliticianRouter } = require('./routers/politician.js')
 
 ///////////////////////////
@@ -36,6 +37,7 @@ app.use(morgan("tiny")); //logging
 //Routes and Routers
 //////////////
 app.get('/', (req, res) => res.send('App is working'))
+app.use("/", swaggerRouter);
 app.use("/api/", PingRouter);
 app.use("/api/politicians", PoliticianRouter);
 

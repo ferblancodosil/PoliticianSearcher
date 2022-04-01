@@ -89,7 +89,7 @@ const search = async ({ filter = '', page = 0 } = {}) => {
     body: query
   })
   if (body.responses.length > 0 && body.responses[0].status === 200) {
-    return body.responses[0].hits.hits.map(h => Object.assign({id: h._id}, h._source))
+    return body.responses[0].hits.hits.map(h => Object.assign({ID: h._id}, h._source))
   } else {
     throw new Error("Query error")
   }
@@ -118,9 +118,9 @@ const getById = async ({ id } = {}) => {
     if (!element) {
       throw new Error(`Not found element by id ${id}`)
     }
-    return Object.assign({ id: element._id }, element._source)
+    return Object.assign({ ID: element._id }, element._source)
   } else {
-    throw new Error("Query error")
+    throw new Error(`Not found element by id ${id}`)
   }
 }
 
