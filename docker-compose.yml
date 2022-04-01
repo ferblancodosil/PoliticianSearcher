@@ -8,7 +8,7 @@ services:
       - 3000:3000
     environment:
       - NODE_ENV=development
-      - ELASTIC=http://localhost:9200
+      - ELASTIC=http://elasticsearch:9200
       - PORT=3000
     volumes:
       - .:/usr/src/app/quotes
