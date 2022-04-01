@@ -1,22 +1,32 @@
 ## Politician Searcher
 
+### Run local enviroment
+
 - Make sure to run npm install
 
 - Environmental variables defined in env.yaml, so create a env.yaml that looks like this...
 
 ```yaml
 development:
-  PORT: 4000
-  SECRET: "production"
+  ELASTIC: 'http://localhost:9200'
+  PORT: 3000
+  NODE_ENV: "development"
+  ELASTIC_INDEX_NAME: 'politician',
+  REMOVE_INDEX_BEFORE_BULK: true
+  FILTER_FIELDS: ["TITULAR"]
+  QUERY_RESULTS: 50
+  WHITE_LIST: '*'
 
 production:
+  ELASTIC: 'http://localhost:9200'
   PORT: 3000
-  SECRET: "development"
+  NODE_ENV: "production"
+  ELASTIC_INDEX_NAME: 'politician',
+  REMOVE_INDEX_BEFORE_BULK: true
+  FILTER_FIELDS: ["TITULAR"]
+  QUERY_RESULTS: 50
+  WHITE_LIST: ['http://localhost:3000']
 ```
-
-- auth.js has most of the auth middleware logic built out, just create a verify user function based on your particular database setup.
-
-- cors whitelist defined in config/cors.js, when in a non-production environment it will allow all traffic, in production it will work off the whitelist.
 
 ## Commands
 
