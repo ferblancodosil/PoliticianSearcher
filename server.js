@@ -36,7 +36,6 @@ app.use(morgan("tiny")); //logging
 ///////////////
 //Routes and Routers
 //////////////
-app.get('/', (req, res) => res.send('App is working'))
 app.use("/", swaggerRouter);
 app.use("/api/", PingRouter);
 app.use("/api/politicians", PoliticianRouter);
