@@ -5,7 +5,7 @@ const { politicians: PoliticianRouter } = require('./routers/politician.js')
 ///////////////////////////
 // Environmental Variables
 ///////////////////////////
-const { PORT, NODE_ENV, SECRET } = require('./configs/enviroment.js')
+const { PORT, NODE_ENV, ELASTIC } = require('./configs/enviroment.js')
 console.log(PORT);
 
 //CORS
@@ -45,7 +45,7 @@ app.use("/api/politicians", PoliticianRouter);
   res.json(req.payload);
 }); */
 
-
+console.info(`ELASTIC HOST: ${ELASTIC}`);
 //LISTENER
 app.listen(PORT, () => {
   console.log(`Your are listening on port ${PORT}`);
